@@ -46,19 +46,9 @@ namespace _Project.Scripts
             Vector2 worldPos = f.GetPosition(fieldPos);
                     
             float distSqr = worldPos.sqrMagnitude;
-            float denomSqrt = 1 + distSqr;
-            float denom = denomSqrt * denomSqrt;
-            Vector2 value = -worldPos / denom;
-
-            return value;
-        }
-        
-        private static float GetGradientY(Field f, Vector2Int fieldPos)
-        {
-            Vector2 worldPos = f.GetPosition(fieldPos);
-                    
-            float distSqr = worldPos.sqrMagnitude;
-            float value = 1 / (1 + distSqr);
+            float valueSqrt = 1 / (1 + distSqr);
+            
+            Vector2 value = (valueSqrt * valueSqrt) * worldPos;
 
             return value;
         }

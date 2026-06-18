@@ -5,8 +5,12 @@ namespace _Project.Scripts
 {
     public static class FieldMeshGenerator
     {
-        public static Mesh Generate(Field field, int channel, float meshHeight)
+        public static Mesh Render(int channel)
         {
+            Field field = TSneManager.RepulsiveForceField();
+            
+            float meshHeight = Manager.Settings.fieldHeight;
+            
             int width = field.Shape.x;
             int height = field.Shape.y;
 
