@@ -11,28 +11,14 @@ namespace _Project.Scripts
             SimilarityCompute.UpdateSimilarities();
         }
 
-        public static float Similarity(Settings.Point a, Settings.Point b)
+        public static float Similarity(Point a, Point b)
         {
-            return Manager.Settings._similarities[new Settings.PointTuple(a, b)];
+            return Manager.Settings._similarities[new PointTuple(a, b)];
         }
         
         public static Field RepulsiveForceField()
         {
-            Settings settings = Manager.Settings;
-
-            List<Vector2> points = settings._points.ConvertAll(p =>
-            {
-                Transform t = p.transform;
-                return new Vector2(t.position.x, t.position.z);
-            });
-
-            Field f = new(-settings.s_spawnRange, settings.s_spawnRange, settings.FieldResolution);
-            Field kernel = FieldKernelGenerator.Generate(settings.KernelSize, settings.KernelResolution);
-            
-            foreach (Vector2 point in points) 
-                f.AddKernel(kernel, point);
-            
-            return f;
+            return RepulsiveForceFieldGenerator.RepulsiveForceField();
         }
 
         public static List<Vector3> AttractiveForces(float z = -1, Field field = null)
@@ -42,11 +28,11 @@ namespace _Project.Scripts
             
             var points = Manager.Settings._points;
             List<Vector3> forces = new(points.Count);
-            foreach (Settings.Point i in points)
+            foreach (Point i in points)
             {
                 Vector3 force = Vector3.zero;
 
-                foreach (Settings.Point j in points)
+                foreach (Point j in i.nearestNeighbours)
                 {
                     if (i == j) continue;
                     
@@ -63,7 +49,7 @@ namespace _Project.Scripts
                     // but be aware that this isnt actually qij
                     float qij = 1f / (1f + distSqr); 
                     
-                    force += delta * pij * qij;
+                    force += delta * (pij * qij);
                 }
                 
                 forces.Add(force);
@@ -81,7 +67,7 @@ namespace _Project.Scripts
 
             var points = Manager.Settings._points;
             List<Vector3> forces = new(points.Count);
-            foreach (Settings.Point a in points)
+            foreach (Point a in points)
             {
                 Vector3 position = a.transform.position;
                 Vector2 pos = new Vector2(position.x, position.z);
@@ -95,7 +81,7 @@ namespace _Project.Scripts
             return forces;
         }
 
-        private static float Z(Field f = null)
+        public static float Z(Field f = null)
         {
             if (f == null)
                 f = RepulsiveForceField();
@@ -128,10 +114,10 @@ namespace _Project.Scripts
             
             for (var i = 0; i < points.Count; i++)
             {
-                Settings.Point p = points[i];
+                Point p = points[i];
                 Vector3 f = forces[i];
                 
-                p.transform.position += f * Manager.Settings.stepSize;
+                p.transform.position += f;
             }
         }
     }

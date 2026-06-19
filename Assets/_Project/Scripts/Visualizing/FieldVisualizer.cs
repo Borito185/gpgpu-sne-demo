@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Linq;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace _Project.Scripts
 {
     public static class FieldVisualizer
     {
+        private static Settings.DrawMode previous = Settings.DrawMode.VectorField-1;
+        
         public static void Reset()
         {
             Settings settings = Manager.Settings;
 
-            Utils.DestroyChildren(settings.s_arrowParent);
+            ArrowUtils.Reset();
             settings.s_fieldMesh.gameObject.SetActive(false);
         }
 
@@ -33,13 +33,13 @@ namespace _Project.Scripts
                     VectorFieldGenerator.Render();
                     break;
                 case Settings.DrawMode.DensityField:
-                    SetMesh(FieldMeshGenerator.Render(0));
+                    SetMesh(FieldTextureGenerator.Render(0));
                     break;
                 case Settings.DrawMode.GradientXField:
-                    SetMesh(FieldMeshGenerator.Render(1));
+                    SetMesh(FieldTextureGenerator.Render(1));
                     break;
                 case Settings.DrawMode.GradientYField:
-                    SetMesh(FieldMeshGenerator.Render(2));
+                    SetMesh(FieldTextureGenerator.Render(2));
                     break;
                 case Settings.DrawMode.PointRepulsive:
                     PointForceVectorGenerator.Render(PointForceVectorGenerator.Mode.RepulsiveForces);
@@ -53,6 +53,8 @@ namespace _Project.Scripts
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            ArrowUtils.DrawArrows();
         }
     }
 }

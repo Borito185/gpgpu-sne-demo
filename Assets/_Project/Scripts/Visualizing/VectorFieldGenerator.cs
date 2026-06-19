@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Project.Scripts
 {
@@ -7,12 +6,11 @@ namespace _Project.Scripts
     {
         public static void Render()
         {
-            Transform parent = Manager.Settings.s_arrowParent;
             Field f = TSneManager.RepulsiveForceField();
 
             Vector3Int shape = f.Shape;
 
-            float norm = f.Value.Max(v => new Vector2(v.y, v.z).magnitude);
+            float z = TSneManager.Z(f);
             
             for (int i = 0; i < shape.x; i++)
             {
@@ -23,12 +21,12 @@ namespace _Project.Scripts
                     Vector3 v = f.Get(index);
                     Vector3 dir = new Vector3(v.y, 0, v.z).normalized;
                     
-                    float size = (v.magnitude / norm) * Manager.Settings.arrowSize;
+                    float size = (new Vector3(v.y, 0, v.z).magnitude / z) * Manager.Settings.arrowSize * 1000;
                     
                     if (size < 0.1f) 
                         continue;
                     
-                    Utils.SpawnArrow(new Vector3(pos.x, 0, pos.y), dir, size, parent);
+                    ArrowUtils.SpawnArrow(new Vector3(pos.x, 0, pos.y), dir, size);
                 }
             }
         }

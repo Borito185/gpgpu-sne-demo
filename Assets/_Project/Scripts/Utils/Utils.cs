@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace _Project.Scripts
@@ -14,18 +12,6 @@ namespace _Project.Scripts
             #else
             GameObject.Destroy(o);
             #endif
-        }
-
-        public static List<Transform> GetChildren(Transform transform)
-        {
-            int count = transform.childCount;
-            List<Transform> result = new(count); 
-            for (int i = count - 1; i >= 0; i--)
-            {
-                result.Add(transform.GetChild(i));
-            }
-            
-            return result;
         }
 
         public static void DestroyChildren(Transform transform)
@@ -45,15 +31,6 @@ namespace _Project.Scripts
             renderer.GetPropertyBlock(block);
             block.SetColor("_BaseColor", color);
             renderer.SetPropertyBlock(block);
-        }
-
-        public static GameObject SpawnArrow(Vector3 position, Vector3 direction, float arrowSize, Transform parent = null)
-        {
-            GameObject arrow = Manager.Settings.s_arrowPrefab;
-            arrow = Object.Instantiate(arrow, position, Quaternion.LookRotation(direction), parent);
-            arrow.transform.localScale = new Vector3(arrowSize, arrowSize, arrowSize);
-            MarkAsTransient(arrow);
-            return arrow;
         }
 
         public static void MarkAsTransient(GameObject go)

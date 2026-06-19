@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Scripts
@@ -106,8 +107,8 @@ namespace _Project.Scripts
             minIndex.y = Mathf.Clamp(minIndex.y, 0, Shape.y - 1);
             maxIndex.x = Mathf.Clamp(maxIndex.x, 0, Shape.x - 1);
             maxIndex.y = Mathf.Clamp(maxIndex.y, 0, Shape.y - 1);
-
-            for (int y = minIndex.y; y <= maxIndex.y; y++)
+            
+            Parallel.For(minIndex.y, maxIndex.y + 1, y =>
             {
                 for (int x = minIndex.x; x <= maxIndex.x; x++)
                 {
@@ -118,7 +119,7 @@ namespace _Project.Scripts
 
                     Add(index, kernel.GetInterpolatedValue(kernelPos));
                 }
-            }
+            });
         }
 
         public float Sum(int channel)

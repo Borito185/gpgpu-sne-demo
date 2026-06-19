@@ -1,4 +1,3 @@
-using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -36,11 +35,16 @@ namespace _Project.Scripts
         {
             float time = Time.time;
 
-            if (settings.simulate && timeLastStep + settings.cooldownSeconds < time)
+            if (settings.simulate && timeLastStep + (1f / settings.targetRate) < time)
             {
                 timeLastStep = time;
                 Step();
             }
+            else
+            {
+                Render();
+            }
+            
         }
         
         [Button]
@@ -63,15 +67,6 @@ namespace _Project.Scripts
         {
             TSneManager.SimulateStep();
             Render();
-        }
-
-        [Button]
-        public void Step10()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                Step();
-            }
         }
 
         [Button]

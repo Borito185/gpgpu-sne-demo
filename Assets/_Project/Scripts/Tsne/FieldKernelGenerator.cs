@@ -4,9 +4,17 @@ namespace _Project.Scripts
 {
     public static class FieldKernelGenerator
     {
+        private static Vector3 previous = -Vector3.one;        
+        private static Field f;
+        
         public static Field Generate(Vector2Int size, float resolution = 2)
         {
-            Field f = new Field(Vector2.zero, size, resolution);
+            Vector3 key = new(size.x, size.y, resolution);
+            if (previous == key)
+                return f;
+            previous = key;
+            
+            f = new Field(Vector2.zero, size, resolution);
             Vector2 sizeFloat = size;
             Vector2 sizeFloat_Half = sizeFloat * 0.5f;
             f.min = -sizeFloat_Half;
@@ -27,7 +35,7 @@ namespace _Project.Scripts
                     f.Set(fieldPos, value);
                 }
             }
-
+            
             return f;
         }
         

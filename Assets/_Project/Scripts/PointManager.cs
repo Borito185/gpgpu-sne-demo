@@ -17,12 +17,16 @@ namespace _Project.Scripts
             Utils.DestroyChildren(parent);
             
             // generate new
-            List<Settings.Point> points = new(n);
+            List<Point> points = new(n);
             for (int i = 0; i < n; i++)
             {
                 // random non-transparent color
-                Color color = Random.ColorHSV();
-                color.a = 1f;
+                Color color = new Color(
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f), 
+                    1
+                );
                 
                 // random position
                 Vector3 position = new(
@@ -36,7 +40,7 @@ namespace _Project.Scripts
                 Utils.SetColor(go, color);
                 Utils.MarkAsTransient(go);
                 
-                points.Add(new Settings.Point(color, go.transform));
+                points.Add(new Point(color, go.transform));
             }
             
             settings._points = points;
@@ -45,7 +49,7 @@ namespace _Project.Scripts
         public static void Render()
         {
             Settings settings = Manager.Settings;
-            foreach (Settings.Point p in settings._points)
+            foreach (Point p in settings._points)
             {
                 Transform t = p.transform;
                 t.transform.localScale = settings.pointSize * Vector3.one;
