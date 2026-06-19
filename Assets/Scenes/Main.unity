@@ -318,18 +318,18 @@ MonoBehaviour:
     text: "This is the X gradient channel of the field. Blue represents points should
       be pushed to the left, red represents pushing to the right.\n\nThe final gradient
       is found by sampling both X and Y and normalizing it by Z (more on that in
-      Density Field).\n\nTry playing with the field & kernel controls. The original
-      paper uses a resolution of 2 for the field, do you still notice artifacts at
-      this level? Also try changing the kernel size. \n\nA points influence spreads
-      relatively far, but at a much smaller strength."
+      Density Field).\n\nTry setting sample number to 1 and playing with the field
+      & kernel controls. The original paper uses a resolution of 2 for the field,
+      do you still notice artifacts at this level? Also try changing the kernel size.
+      \n\nA points influence spreads relatively far, but at a much smaller strength."
   - mode: 3
     text: "This is the Y gradient channel of the field. Blue represents points should
       be pushed down, red represents pushing up.\n\nThe final gradient is found by
       sampling both X and Y and normalizing it by Z (more on that in Density Field).\n\nTry
-      playing with the field & kernel controls. The original paper uses a resolution
-      of 2 for the field, do you still notice artifacts at this level? Also try changing
-      the kernel size. \n\nA points influence spreads relatively far, but at a much
-      smaller strength."
+      setting sample number to 1 and  playing with the field & kernel controls. The
+      original paper uses a resolution of 2 for the field, do you still notice artifacts
+      at this level? Also try changing the kernel size. \n\nA points influence spreads
+      relatively far, but at a much smaller strength."
   - mode: 4
     text: 'This draw mode shows the repulsive force applied on each point. The size
       of the arrow represents the strength.
