@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using System;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -17,7 +18,7 @@ namespace Tsne
      * However, this is computed on the cpu.
      */
     [BurstCompile]
-    public struct FieldKernelPixelJob : IJobParallelFor
+    public struct FieldKernelPixelJob : IJobParallelForBatch, IJobFor
     {
         [ReadOnly] public NativeArray<float3> kernel;
         [ReadOnly] public NativeArray<float2> points;
@@ -94,6 +95,12 @@ namespace Tsne
                 math.lerp(v01, v11, fx),
                 fy
             );
+        }
+
+        public void Execute(int startIndex, int count)
+        {
+            for (int i = 0; i < count; i++) 
+                Execute(startIndex + i);
         }
     }
 }

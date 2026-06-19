@@ -46,7 +46,7 @@ namespace Tsne
                 kernelMax = kernel.max
             };
 
-            JobHandle handle = job.Schedule(f.Shape.x * f.Shape.y, 64);
+            JobHandle handle = job.ScheduleParallel(f.Shape.x * f.Shape.y, 64);
             handle.Complete();
 
             CopyBack(fieldArray, f);
