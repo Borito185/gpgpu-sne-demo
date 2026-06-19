@@ -11,6 +11,8 @@ namespace _Project.Scripts
             Vector3Int shape = f.Shape;
 
             float z = TSneManager.Z(f);
+
+            z = Mathf.Max(z, 1f);
             
             for (int i = 0; i < shape.x; i++)
             {

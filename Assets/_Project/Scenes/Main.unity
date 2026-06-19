@@ -262,7 +262,7 @@ MonoBehaviour:
     s_pointPrefab: {fileID: 3490533902414072016, guid: 8dde99aab5f4be945a0789d1298c15f7, type: 3}
     s_pointParent: {fileID: 683639157}
     s_pointHeight: 5
-    drawMode: 5
+    drawMode: 0
     FieldResolution: 2
     KernelResolution: 5
     KernelSize: {x: 5, y: 5}
@@ -286,6 +286,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddcab4a4c29b4835b595464d121361af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.SettingsIMGUI
+  drawModeTexts:
+  - mode: 0
+    text: 'The vector field shows how the field, represented by the arrows, is influenced
+      by the datapoints. Each datapoint applies a field that pushes nearby points
+      away. The size of the arrow represents the strength of the force.
+
+
+      Try
+      setting the number of samples to 1 (press reset to update). this directly shows
+      the kernel a single point applies.
+
+
+      Move on to other field draw modes
+      to inspect the different channels of the kernel.
+
+
+      In addition to the
+      other field draw modes, also check out the repuslive force visualizer to see
+      the sampled forces. '
+  - mode: 1
+    text: 'This is the density channel of the field. Red represents many points clustered,
+      whereas white means little to none.
+
+
+      The density channel is used to
+      construct the Z component. This is applied as a normalizing factor when computing
+      the repulsive force. It is computed by summing the densities at each points
+      position.'
+  - mode: 2
+    text: "This is the X gradient channel of the field. Blue represents points should
+      be pushed to the left, red represents pushing to the right.\n\nThe final gradient
+      is found by sampling both X and Y and normalizing it by Z (more on that in
+      Density Field).\n\nTry playing with the field & kernel controls. The original
+      paper uses a resolution of 2 for the field, do you still notice artifacts at
+      this level? Also try changing the kernel size. \n\nA points influence spreads
+      relatively far, but at a much smaller strength."
+  - mode: 3
+    text: "This is the Y gradient channel of the field. Blue represents points should
+      be pushed down, red represents pushing up.\n\nThe final gradient is found by
+      sampling both X and Y and normalizing it by Z (more on that in Density Field).\n\nTry
+      playing with the field & kernel controls. The original paper uses a resolution
+      of 2 for the field, do you still notice artifacts at this level? Also try changing
+      the kernel size. \n\nA points influence spreads relatively far, but at a much
+      smaller strength."
+  - mode: 4
+    text: 'This draw mode shows the repulsive force applied on each point. The size
+      of the arrow represents the strength.
+
+
+      Many points stay stagnant despite
+      a strong repulsive force. This is because its perfectly cancelled out by the
+      attractive force.'
+  - mode: 5
+    text: 'This draw mode shows the attractive force applied on each point. The size
+      of the arrow represents the strength.
+
+
+      Many points stay stagnant despite
+      a strong attractive force. This is because its perfectly cancelled out by the
+      repulsive force.'
+  - mode: 6
+    text: 'This draw mode shows the total force applied on each point. The size of
+      the arrow represents the strength.
+
+
+      This mode directly visualizes what
+      direction a point will move to and also how fast.'
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
