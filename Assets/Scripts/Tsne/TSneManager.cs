@@ -91,6 +91,9 @@ namespace Tsne
 
         public static List<Vector3> Forces()
         {
+            if (Manager.Settings.N == 1)
+                return new List<Vector3>(new []{Vector3.zero});
+            
             var attractiveForces = AttractiveForces();
             var repulsiveForces = RepulsiveForces();
 
