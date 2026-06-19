@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Models
 {
+    /**
+     * Stores the field/kernel texture.
+     * Supports sampling and space conversion helper functions.
+     */
     public class Field
     {
         public Vector2 min;
@@ -28,26 +30,18 @@ namespace _Project.Scripts
             Value = new Vector3[Shape.x * Shape.y];
         }
 
-        private int Index(in Vector2Int pos)
-        {
-            return pos.y * Shape.x + pos.x;
-        }
+        private int Index(in Vector2Int pos) 
+            => pos.y * Shape.x + pos.x;
 
-        public Vector3 Get(in Vector2Int pos)
-        {
-            return Value[Index(pos)];
-        }
+        public Vector3 Get(in Vector2Int pos) 
+            => Value[Index(pos)];
 
-        public Vector3 Add(in Vector2Int pos, Vector3 value)
-        {
-            return Value[Index(pos)] += value;
-        }
+        public Vector3 Set(in Vector2Int pos, Vector3 value) 
+            => Value[Index(pos)] = value;
 
-        public Vector3 Set(in Vector2Int pos, Vector3 value)
-        {
-            return Value[Index(pos)] = value;
-        }
-
+        /**
+         * Bilinear interpolates between the field pixel values
+         */
         public Vector3 GetInterpolatedValue(in Vector2 pos)
         {
             var tx = Mathf.InverseLerp(min.x, max.x, pos.x) * (Shape.x - 1);
@@ -73,17 +67,6 @@ namespace _Project.Scripts
             return Vector3.Lerp(vx0, vx1, fy);
         }
 
-        public Vector2Int GetIndex(in Vector2 pos)
-        {
-            var tx = Mathf.InverseLerp(min.x, max.x, pos.x);
-            var ty = Mathf.InverseLerp(min.y, max.y, pos.y);
-
-            return new Vector2Int(
-                (int)Mathf.Lerp(0, Shape.x - 1, tx),
-                (int)Mathf.Lerp(0, Shape.y - 1, ty)
-            );
-        }
-
         public Vector2 GetPosition(in Vector2Int index)
         {
             var tx = Mathf.InverseLerp(0, Shape.x - 1, index.x);
@@ -93,38 +76,6 @@ namespace _Project.Scripts
                 Mathf.Lerp(min.x, max.x, tx),
                 Mathf.Lerp(min.y, max.y, ty)
             );
-        }
-
-        public void AddKernel(Field kernel, Vector2 pos)
-        {
-            Vector2 fieldMin = pos + kernel.min;
-            Vector2 fieldMax = pos + kernel.max;
-
-            Vector2Int minIndex = GetIndex(fieldMin);
-            Vector2Int maxIndex = GetIndex(fieldMax);
-
-            minIndex.x = Mathf.Clamp(minIndex.x, 0, Shape.x - 1);
-            minIndex.y = Mathf.Clamp(minIndex.y, 0, Shape.y - 1);
-            maxIndex.x = Mathf.Clamp(maxIndex.x, 0, Shape.x - 1);
-            maxIndex.y = Mathf.Clamp(maxIndex.y, 0, Shape.y - 1);
-            
-            Parallel.For(minIndex.y, maxIndex.y + 1, y =>
-            {
-                for (int x = minIndex.x; x <= maxIndex.x; x++)
-                {
-                    var index = new Vector2Int(x, y);
-
-                    Vector2 worldPos = GetPosition(index);
-                    Vector2 kernelPos = worldPos - pos;
-
-                    Add(index, kernel.GetInterpolatedValue(kernelPos));
-                }
-            });
-        }
-
-        public float Sum(int channel)
-        {
-            return Value.Sum(v => v[channel]);
         }
     }
 }

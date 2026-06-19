@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace _Project.Scripts
+namespace Utils
 {
     public static class ArrowUtils
     {

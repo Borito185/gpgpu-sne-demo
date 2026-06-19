@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Models;
 using UnityEngine;
 using Utils;
 
-namespace _Project.Scripts
+namespace Tsne
 {
+    /**
+     * Computes Pij for all combinations (except Pii)
+     */
     public static class SimilarityCompute
     {
         public static void UpdateSimilarities()
@@ -15,6 +19,7 @@ namespace _Project.Scripts
             var similarities = settings._similarities;
             similarities.Clear();
 
+            // compute the conditionals (Pi|j)
             Dictionary<Tuple<Point, Point>, float> conditionals = new(n * n - n); 
             foreach (Point i in settings._points)
             {
@@ -30,6 +35,7 @@ namespace _Project.Scripts
                 }
             }
             
+            // Compute the similarities Pij and track knn
             foreach (Point i in settings._points)
             {
                 PriorityQueue<Point, float> nn = new PriorityQueue<Point, float>();
@@ -86,6 +92,10 @@ namespace _Project.Scripts
             return Mathf.Max(denominator, 1e-12f);
         }
         
+        /**
+         * Extracts the features from the point.
+         * In this case it returns the YCbCr representation as I like the embeddings it makes then.
+         */
         public static Vector3 Features(Point point)
         {
             Color c = point.color;
@@ -97,6 +107,9 @@ namespace _Project.Scripts
             return new Vector3(y, cb, cr);
         }
         
+        /**
+         * Binary searches through sigma values to find one that fits the target perplexity
+         */
         public static void ComputeSigma(Point i)
         {
             Settings settings = Manager.Settings;

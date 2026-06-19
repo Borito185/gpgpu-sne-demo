@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Project.Scripts
+namespace Utils
 {
     public static class Utils
     {

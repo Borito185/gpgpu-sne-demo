@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using Models;
+using Tsne;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Visualizing
 {
     public static class FieldTextureGenerator
     {
@@ -88,6 +90,7 @@ namespace _Project.Scripts
             texture.filterMode = FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
 
+            // map pixels from field to texture
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
@@ -95,6 +98,7 @@ namespace _Project.Scripts
                     Vector3 v = field.Get(new Vector2Int(x, y));
                     float value = v[channel];
 
+                    // if the gradient is selected then also give a normalized vector
                     float vec = 0;
                     if (channel > 0)
                     {

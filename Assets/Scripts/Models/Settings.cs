@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Models
 {
+    /**
+     * Stores most settings for the tool.
+     * Can be accessed globally through the manager.
+     */
     [System.Serializable]
     public class Settings
     {

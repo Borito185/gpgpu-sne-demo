@@ -1,12 +1,15 @@
 ﻿using System;
+using Models;
 using UnityEngine;
+using Utils;
 
-namespace _Project.Scripts
+namespace Visualizing
 {
+    /**
+     * Entry point for selecting the draw mode
+     */
     public static class FieldVisualizer
     {
-        private static Settings.DrawMode previous = Settings.DrawMode.VectorField-1;
-        
         public static void Reset()
         {
             Settings settings = Manager.Settings;

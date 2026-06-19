@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Models;
+using Tsne;
 using UnityEngine;
+using Utils;
 
-namespace _Project.Scripts
+namespace Visualizing
 {
     public static class PointForceVectorGenerator
     {
@@ -33,6 +36,7 @@ namespace _Project.Scripts
                 
                 float size = f.magnitude * Manager.Settings.arrowSize * 1000;
 
+                // add slight offset so that the vector isnt inside the point
                 Vector3 pos = p.transform.position + (Manager.Settings.pointSize/2) * f.normalized;
                 
                 ArrowUtils.SpawnArrow(pos, f.normalized, size);

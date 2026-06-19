@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Models
 {
+    /**
+     * Represents a single datapoint.
+     */
     public class Point
     {
         public Color color;

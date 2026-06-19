@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using Models;
+using Tsne;
+using UnityEngine;
+using Utils;
 
-namespace _Project.Scripts
+namespace Visualizing
 {
     public static class VectorFieldGenerator
     {

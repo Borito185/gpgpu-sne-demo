@@ -1,10 +1,14 @@
-﻿using Unity.Collections;
+﻿using Models;
+using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Tsne
 {
+    /**
+     * Uses FieldKernelPixelJob to compute the repulsive field.
+     */
     public static class RepulsiveForceFieldGenerator
     {
         public static Field RepulsiveForceField()

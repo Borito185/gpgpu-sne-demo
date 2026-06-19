@@ -3,8 +3,19 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace _Project.Scripts
+namespace Tsne
 {
+    /**
+     * Task done for each pixel in the repulsive field.
+     * Loops through the point positions and sums the kernels for the current pixel.
+     * Much of this is just rewritten code from Field.cs adjusted so it works with Burst
+     * This makes the computation much faster
+     *
+     * Although not the same as the main algorithm mentioned in the paper.
+     * This is still much like the second algorithm,
+     * where instead of the rasterization pipeline, they use a compute shader.
+     * However, this is computed on the cpu.
+     */
     [BurstCompile]
     public struct FieldKernelPixelJob : IJobParallelFor
     {

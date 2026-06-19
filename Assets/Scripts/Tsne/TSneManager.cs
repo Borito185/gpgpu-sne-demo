@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Models;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace Tsne
 {
+    /**
+     * Single api for t-SNE.
+     * mostly follows the description as in the paper.
+     */
     public static class TSneManager
     {
         public static void Reset()
@@ -11,21 +16,14 @@ namespace _Project.Scripts
             SimilarityCompute.UpdateSimilarities();
         }
 
-        public static float Similarity(Point a, Point b)
-        {
-            return Manager.Settings._similarities[new PointTuple(a, b)];
-        }
-        
-        public static Field RepulsiveForceField()
-        {
-            return RepulsiveForceFieldGenerator.RepulsiveForceField();
-        }
+        public static float Similarity(Point a, Point b) 
+            => Manager.Settings._similarities[new PointTuple(a, b)];
 
-        public static List<Vector3> AttractiveForces(float z = -1, Field field = null)
+        public static Field RepulsiveForceField() 
+            => RepulsiveForceFieldGenerator.RepulsiveForceField();
+
+        public static List<Vector3> AttractiveForces()
         {
-            if (z < 0) 
-                z = Z(field);
-            
             var points = Manager.Settings._points;
             List<Vector3> forces = new(points.Count);
             foreach (Point i in points)
@@ -58,12 +56,10 @@ namespace _Project.Scripts
             return forces;
         }
 
-        public static List<Vector3> RepulsiveForces(Field field = null, float z = -1)
+        public static List<Vector3> RepulsiveForces()
         {
-            if (field == null) 
-                field = RepulsiveForceField();
-            if (z < 0) 
-                z = Z(field);
+            Field field = RepulsiveForceField();
+            float z = Z(field);
 
             var points = Manager.Settings._points;
             List<Vector3> forces = new(points.Count);
@@ -83,24 +79,20 @@ namespace _Project.Scripts
 
         public static float Z(Field f = null)
         {
-            if (f == null)
-                f = RepulsiveForceField();
+            f ??= RepulsiveForceField();
             
             float z = Manager.Settings._points
                 .Select(p => p.transform.position)
                 .Select(p => new Vector2(p.x, p.z))
                 .Select(p => f.GetInterpolatedValue(p))
-                .Sum(v => v.x-1);
+                .Sum(v => v.x-1); // -1 to remove a points own density at this spot
             return z;
         }
 
         public static List<Vector3> Forces()
         {
-            Field field = RepulsiveForceField();
-            float z = Z(field);
-            
-            var attractiveForces = AttractiveForces(z);
-            var repulsiveForces = RepulsiveForces(field, z);
+            var attractiveForces = AttractiveForces();
+            var repulsiveForces = RepulsiveForces();
 
             return attractiveForces
                 .Zip(repulsiveForces, (a, r) => 4 * (a + r))
